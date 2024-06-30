@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export function AppbarClient() {
   const session = useSession();
   const router = useRouter();
+  // console.log("AppbarClient " , session)
 
   return (
    <div>

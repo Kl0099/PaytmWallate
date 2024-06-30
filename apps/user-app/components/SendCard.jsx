@@ -4,12 +4,18 @@ import { Card } from "@repo/ui/card";
 import { Center } from "@repo/ui/center";
 import { TextInput } from "@repo/ui/textinput";
 import { useState } from "react";
-import { P2PTransfer } from "../app/lib/P2PTransfer";
+import { P2PTransfer, P2PTransferMoney } from "../app/lib/P2PTransfer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../app/lib/auth";
+import { sendMoneyMessage } from "../atom/sendAtom";
+import { useSetRecoilState } from "recoil";
 
 export function SendCard() {
     const [number, setNumber] = useState("");
     const [amount, setAmount] = useState("");
     const [loading , setLoading] = useState(false);
+    
+  const setSendMoneyMessage = useSetRecoilState(sendMoneyMessage);
 	
 	const sendMoney = async ()=>{
 		setLoading(true);
@@ -18,13 +24,15 @@ export function SendCard() {
 			console.log("response : " , res)
 
 			if(res.success) {
-
+              setSendMoneyMessage(res.message)
 			}
 		} catch (error) {
 			console.log(error)
+            setSendMoneyMessage(error.message)
 		}
 		setLoading(false);
 	}
+    
     return <div className="h-[90vh]">
         <Center>
             <Card title="Send">
@@ -38,6 +46,7 @@ export function SendCard() {
                     <div className="pt-4 flex justify-center">
                         <Button disabled={loading} onClick={sendMoney}>{loading ? "Please wait" : "send"}</Button>
                     </div>
+                  
                 </div>
             </Card>
         </Center>

@@ -9,12 +9,14 @@ export const OnRampTransactions = ({
     transactions
 }: {
     transactions: {
-        time: Date,
+        time?: Date,
         amount: number,
+        timestamp?: Date,
         
         // TODO: Can the type of `status` be more specific?
-        status: status,
-        provider: string
+        status?: status,
+        provider?: string,
+        name?: string,
     }[]
 }) => {
     if (!transactions.length) {
@@ -26,7 +28,7 @@ export const OnRampTransactions = ({
     }
     return <Card title="Recent Transactions">
         <div className="pt-2">
-            {transactions.map((t,index)=> <div  key={index} className="flex justify-between items-start mb-2 ">
+            {transactions?.map((t,index)=> <div  key={index} className="flex justify-between items-start mb-2 ">
                 <div>
 
                     <div className="text-sm">
@@ -34,14 +36,25 @@ export const OnRampTransactions = ({
                     </div>
                     
                     <div className="text-slate-600 text-xs">
-                        {t.time.toDateString()}
+                        {
+                            t.time && t.time.toString()
+                        }
+                        {
+                            t.timestamp && t.timestamp.toString()
+                        }
                     </div>
                 </div>
                 <div className="flex flex-col justify-center">
                     + Rs {t.amount / 100}
                 </div>
                 
-                <p className={` text-center w-[70px] ${t.status === "Processing" ? "ring-orange-400 border-orange-400" : t.status === "Success" ? " ring-green-400 border-green-400" : "ring-red-500 border-red-500"  } ring-1  md:text-[10px] md:p-1 text-[8px] p-[2px]  border  rounded-md`}>{t.status}</p>
+                {
+                    t.status && (
+
+                        <p className={` text-center w-[70px] ${t.status === "Processing" ? "ring-orange-400 border-orange-400" : t.status === "Success" ? " ring-green-400 border-green-400" : "ring-red-500 border-red-500"  } ring-1  md:text-[10px] md:p-1 text-[8px] p-[2px]  border  rounded-md`}>{t.status}</p>
+                    )
+                }
+
 
             </div>)}
         </div>

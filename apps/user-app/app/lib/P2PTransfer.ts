@@ -1,3 +1,4 @@
+
 "use server"
 
 import { getServerSession } from "next-auth"
@@ -28,7 +29,7 @@ export const P2PTransfer = async (number : string , amount : number)=>{
 		   }
 		   // now if this  handle multiple request for the same user then probably some erros ocuured which is not good enough
 		   //so we need to implement database locking concept
-		   // here we add queue data structure it will be run transections one after this other 
+		   // here we add queue it will be run transections one after this other 
 		   await prisma.$transaction(async (tx) => {
 			await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from)} FOR UPDATE`;
 			const fromBalance = await tx.balance.findUnique({
@@ -74,3 +75,66 @@ export const P2PTransfer = async (number : string , amount : number)=>{
 	}
    
 }
+
+
+export const P2PTransferMoney = async () => {
+	try {
+	  const session = await getServerSession(authOptions);
+	  const fromUserId = session?.user?.id;
+  
+	  if (!fromUserId) {
+		return {
+		  success: false,
+		  transactions: [],
+		  message: "money send failed",
+		};
+	  }
+  
+	  const transactions = await prisma.user.findFirst({
+		where : {
+			id : Number(fromUserId),
+		},
+		include : {
+			sentTransfers : {
+				select :{
+					amount :true,
+					timestamp :true,
+					toUser : {
+						select : {
+							name : true,
+							number : true
+						}
+					}
+				}
+			},
+			receivedTransfers : {
+				select :{
+					amount :true,
+					timestamp :true,
+					fromUser : {
+						select : {
+							name : true,
+							number : true
+						}
+					}
+				}
+			}
+		}
+	  })
+
+	//   console.log("all user filed : " , transactions)
+  
+	  return {
+		success: true,
+		sendTransfer : transactions?.sentTransfers,
+		receivedTransfers : transactions?.receivedTransfers
+	  };
+	} catch (error) {
+	  console.log("p2p error", error);
+	  return {
+		success: false,
+		sendTransfer : [],
+		receivedTransfers : [],
+	  };
+	}
+  };

@@ -37,16 +37,18 @@ export const OnRampTransactions = ({
                     
                     <div className="text-slate-600 text-xs">
                         {
-                            t.time && t.time.toString()
+                            t.time && new Date(t.time).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).replace(',', '')
                         }
-                        {
-                            t.timestamp && t.timestamp.toString()
-                        }
+                        
                     </div>
+                </div>
+                <div className="flex flex-col justify-center">
+                    {t.provider}
                 </div>
                 <div className="flex flex-col justify-center">
                     + Rs {t.amount / 100}
                 </div>
+              
                 
                 {
                     t.status && (

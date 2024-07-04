@@ -2,10 +2,15 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@repo/db/client";
+import { NextAuthOptions } from "next-auth";
+import { z } from "zod";
+import { nodemailerEmailSending } from "./MailSender";
+import otpgenerater from "otp-generator";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
+      id: "Credentials",
       name: "Credentials",
       credentials: {
         phone: {
@@ -62,6 +67,7 @@ export const authOptions = {
       },
     }),
   ],
+
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
     // TODO: can u fix the type here? Using any is bad
@@ -71,63 +77,4 @@ export const authOptions = {
       return session;
     },
   },
-};
-
-interface inputparams {
-  name: string;
-  email: string;
-  password: string;
-  number: string;
-}
-
-export const signUp = async ({
-  name,
-  email,
-  password,
-  number,
-}: inputparams) => {
-  try {
-    const existUser = await prisma.user.findFirst({
-      where: {
-        email: email,
-      },
-    });
-    if (existUser) {
-      return {
-        success: false,
-        message: "user already exists",
-      };
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await prisma.user.create({
-      data: {
-        name: name,
-        email: email,
-        password: hashedPassword,
-        number: number,
-      },
-    });
-
-    const balance = await prisma.balance.create({
-      data: {
-        userId: Number(user.id),
-        amount: 0,
-        locked: 0,
-      },
-    });
-
-    return {
-      success: true,
-      message: "user successfully created",
-    };
-  } catch (error) {
-    console.log("error while signup : ", error);
-    //@ts-ignore
-    return {
-      success: false,
-      message: "error while signup",
-    };
-  }
 };

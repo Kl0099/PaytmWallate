@@ -2,7 +2,7 @@ import React from "react";
 import UserProfile from "../../../components/UserProfile";
 const page = () => {
   return (
-    <div>
+    <div className=" w-screen">
       <UserProfile />
     </div>
   );

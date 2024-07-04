@@ -10,11 +10,15 @@ import { sendUserUpdateMessage, userWholeInfo } from "../atom/sendAtom";
 import { useSession } from "next-auth/react";
 import { title } from "process";
 interface userInfo {
-  name: string;
   number: string;
-  balance: number;
+  name: string | null;
+  email: string | null;
+  Balance: {
+    amount: number;
+    locked: number;
+  };
 }
-const UserCardDetails = ({ userinfo }: { userinfo: userInfo }) => {
+const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
   let { data: session, status, update } = useSession();
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,7 +29,7 @@ const UserCardDetails = ({ userinfo }: { userinfo: userInfo }) => {
   const infoarray = [
     {
       title: "Total Amount",
-      value: userinfo?.balance / 100,
+      value: userInfo.Balance.amount / 100,
     },
     {
       title: "PublicId",
@@ -33,13 +37,18 @@ const UserCardDetails = ({ userinfo }: { userinfo: userInfo }) => {
       button: false,
     },
     {
+      title: "Email",
+      value: userInfo.email,
+      button: false,
+    },
+    {
       title: "Legal Name",
-      value: userinfo?.name,
+      value: userInfo.name,
       button: true,
     },
     {
       title: "Number",
-      value: userinfo?.number,
+      value: userInfo.number,
       button: false,
     },
   ];
@@ -47,7 +56,7 @@ const UserCardDetails = ({ userinfo }: { userinfo: userInfo }) => {
   return (
     <div>
       <div className="text-4xl  pt-8 mb-8 font-bold">
-        hello, <span className="text-[#6a51a6]">{userinfo?.name}</span>
+        hello, <span className="text-[#6a51a6]">{userInfo.name}</span>
       </div>
       <div className=" w-[80%]">
         <Card title="Persional information">
@@ -55,10 +64,13 @@ const UserCardDetails = ({ userinfo }: { userinfo: userInfo }) => {
             {infoarray.map((item) => (
               <div
                 key={item.title}
-                className="flex justify-between items-start mb-5 "
+                className="flex justify-between items-start mb-2 "
               >
                 <div className=" flex w-[20%]  mb-5  justify-between">
-                  <p>{item.title}</p>
+                  <div className="flex justify-between lg:w-[130px]">
+                    <span>{item.title}</span>
+                    <span>:</span>
+                  </div>
                   <div className=" w-[30%] ">
                     {item.value === session?.user?.name &&
                     edit &&

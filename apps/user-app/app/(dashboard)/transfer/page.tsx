@@ -12,6 +12,7 @@ async function getBalance() {
   try {
     const balance = await prisma.balance.findFirst({
       where: {
+        //@ts-ignore
         userId: Number(session?.user?.id),
       },
     });
@@ -36,6 +37,7 @@ async function getOnRampTransactions() {
 
   const txns = await prisma.onRampTransaction.findMany({
     where: {
+      //@ts-ignore
       userId: Number(session?.user?.id),
     },
   });
@@ -54,10 +56,10 @@ export default async function () {
 
   return (
     <div className="w-screen">
-      <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
+      <div className="text-4xl text-[#6a51a6] pt-8 mb-8 ml-4 font-bold">
         Transfer
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 p-4">
         <div>
           <AddMoney />
         </div>

@@ -18,3 +18,7 @@ export const userWholeInfo = atom<object>({
   key: "userWholeInfo",
   default: {},
 });
+export const ToggleValue = atom<boolean>({
+  key: "ToggleValue",
+  default: false,
+});

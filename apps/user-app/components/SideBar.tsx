@@ -1,48 +1,41 @@
-import { AppbarClient } from "../../components/AppBarClient";
-import SideBar from "../../components/SideBar";
-import { SidebarItem } from "../../components/SidebarItem";
+"use client";
+import React from "react";
+import { SidebarItem } from "./SidebarItem";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { ToggleValue } from "../atom/sendAtom";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element {
+const SideBar = () => {
+  const setToggleValue = useSetRecoilState(ToggleValue);
+  const toggleValue = useRecoilValue(ToggleValue);
   return (
-    <div>
-      <AppbarClient />
-      <div className="flex">
-        <div className="w-72 border-r hidden md:block border-slate-300 min-h-screen mr-4 pt-28">
-          <div>
-            <SidebarItem
-              href={"/dashboard"}
-              icon={<HomeIcon />}
-              title="Home"
-            />
-            <SidebarItem
-              href={"/transfer"}
-              icon={<TransferIcon />}
-              title="Transfer"
-            />
-            <SidebarItem
-              href={"/transaction"}
-              icon={<TransactionsIcon />}
-              title="Transactions"
-            />
-            <SidebarItem
-              href={"/P2P"}
-              icon={<PersonIcon />}
-              title="P2P Transfer"
-            />
-          </div>
-        </div>
+    toggleValue && (
+      <div className="w-72 border-r md:relative absolute md:z-0 z-10 bg-[#ebe6e6]   border-slate-300 min-h-screen mr-4 pt-28">
         <div>
-          <SideBar />
+          <SidebarItem
+            href={"/dashboard"}
+            icon={<HomeIcon />}
+            title="Home"
+          />
+          <SidebarItem
+            href={"/transfer"}
+            icon={<TransferIcon />}
+            title="Transfer"
+          />
+          <SidebarItem
+            href={"/transaction"}
+            icon={<TransactionsIcon />}
+            title="Transactions"
+          />
+          <SidebarItem
+            href={"/P2P"}
+            icon={<PersonIcon />}
+            title="P2P Transfer"
+          />
         </div>
-        {children}
       </div>
-    </div>
+    )
   );
-}
+};
 
 // Icons Fetched from https://heroicons.com/
 function HomeIcon() {
@@ -119,3 +112,5 @@ function TransactionsIcon() {
     </svg>
   );
 }
+
+export default SideBar;

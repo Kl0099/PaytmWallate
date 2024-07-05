@@ -32,7 +32,7 @@ export const P2PTransferCard = ({
   }
   return (
     <Card title="Recent Transactions">
-      <div className="pt-2">
+      <div className="pt-2 mx-5">
         {transactions?.map((t, index) => (
           <div
             key={index}
@@ -61,7 +61,7 @@ export const P2PTransferCard = ({
               {t.fromUser ? `${t?.fromUser?.name}` : `${t?.toUser?.name}`}
             </div>
             {t.fromUser?.number !== 0 && t.toUser?.number !== 0 && (
-              <div className="lg:text-lg text-sm">
+              <div className="lg:text-lg text-sm hidden sm:block">
                 {t.fromUser ? `${t?.fromUser?.number}` : `${t?.toUser?.number}`}
               </div>
             )}

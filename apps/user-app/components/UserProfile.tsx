@@ -24,10 +24,10 @@ const page = async () => {
     );
   }
   return (
-    <div className="flex ml-5 gap-10 flex-col">
+    <div className="flex mx-2  md:ml-5 gap-10 flex-col">
       <UserCardDetails userInfo={userInfo} />
 
-      <div className=" w-[50%]">
+      <div className="  text-sm md:text-lg md:w-[50%]">
         <RecentTransaction transactions={transactions} />
       </div>
     </div>

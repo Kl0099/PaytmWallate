@@ -10,6 +10,7 @@ import { FaCrosshairs } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import ErrorComponent from "./ErrorComponent";
 import Image from "next/image";
+import PaytmLogo from "../public/paytm.png";
 export function AppbarClient() {
   const session = useSession();
   const router = useRouter();
@@ -25,7 +26,15 @@ export function AppbarClient() {
 
   return (
     <div className="flex justify-between shadow-sm px-4">
-      <div className="text-lg flex flex-col justify-center">PayTM</div>
+      <div className="text-lg flex flex-col ml-2 justify-center">
+        <Image
+          width={90}
+          height={80}
+          alt="Paytm"
+          src={PaytmLogo}
+          loading="eager"
+        />
+      </div>
       <div className=" md:flex hidden flex-row items-center justify-center pt-2">
         <Image
           className=" mb-2  mr-5 rounded-full"

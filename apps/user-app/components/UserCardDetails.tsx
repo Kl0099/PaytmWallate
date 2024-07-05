@@ -20,10 +20,11 @@ interface userInfo {
   };
 }
 const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
-  let { data: session, status, update } = useSession();
-  const [edit, setEdit] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState<string>("");
+  const [greeting, setGreeting] = useState("");
+
+  useEffect(() => {
+    setGreeting(getGreeting());
+  }, []);
 
   // const userinfo = useRecoilValue(userWholeInfo);
 
@@ -57,10 +58,10 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
   return (
     <div>
       <div className=" text-2xl md:text-4xl  pt-8 mb-8 font-bold">
-        hello, <span className="text-[#6a51a6]">{userInfo.name}</span>
+        {greeting}, <span className="text-[#6a51a6]">{userInfo.name}</span>
       </div>
       <div className=" md:w-[80%]">
-        <Card title="Persional information">
+        <Card title="Personal information">
           <div className="  flex lg:flex-row flex-col  p-1 md:p-2 mt-5 lg:text-lg">
             <div className="md:w-2/3">
               {infoarray.map((item) => (
@@ -90,4 +91,14 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
   );
 };
 
+const getGreeting = () => {
+  const currentHour = new Date().getHours();
+  if (currentHour < 12) {
+    return "Good morning";
+  } else if (currentHour < 18) {
+    return "Good afternoon";
+  } else {
+    return "Good evening";
+  }
+};
 export default UserCardDetails;

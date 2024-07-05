@@ -10,7 +10,8 @@ import { userWholeInfo } from "../../atom/sendAtom";
 export const ChangeName = async (value: string) => {
   const session = await getServerSession(authOptions);
   console.log("sesttion : ", session);
-  const userId = session.user.id;
+  //@ts-ignore
+  const userId = session?.user?.id;
   if (!userId) {
     return {
       success: false,
@@ -28,6 +29,7 @@ export const ChangeName = async (value: string) => {
       },
     });
     // Assuming your session object has a set function to update session data
+    //@ts-ignore
     session.user.name = value;
     // await session.save(); // Save the updated session
     console.log("session updated : ", session);
@@ -51,7 +53,7 @@ export const getUserDetails = async () => {
   // const getuserWholeinfo = useSetRecoilState(userWholeInfo);
   try {
     const session = await getServerSession(authOptions);
-
+    //@ts-ignore
     const userId = session.user.id;
     if (!userId) {
       return {

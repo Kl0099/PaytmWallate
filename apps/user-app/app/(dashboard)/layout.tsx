@@ -1,12 +1,20 @@
+import { getServerSession } from "next-auth";
 import { AppbarClient } from "../../components/AppBarClient";
 import SideBar from "../../components/SideBar";
 import { SidebarItem } from "../../components/SidebarItem";
-
-export default function Layout({
+import { authOptions } from "../lib/auth";
+import { redirect } from "next/navigation";
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}): Promise<JSX.Element> {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/signup");
+    return <></>; // This will never be rendered because of the redirect
+  }
   return (
     <div>
       <AppbarClient />
@@ -35,7 +43,7 @@ export default function Layout({
             />
           </div>
         </div>
-        <div>
+        <div className=" md:hidden block">
           <SideBar />
         </div>
         {children}

@@ -1,4 +1,6 @@
+import { Interface } from "readline";
 import { atom } from "recoil";
+import { string } from "zod";
 
 export const sendMoneyMessage = atom<string>({
   key: "sendMoneyMessage",
@@ -21,4 +23,20 @@ export const userWholeInfo = atom<object>({
 export const ToggleValue = atom<boolean>({
   key: "ToggleValue",
   default: false,
+});
+
+interface bankDetails {
+  userId: string;
+  token: string;
+  amount: number;
+  provider: string;
+}
+export const BankDetail = atom<bankDetails>({
+  key: "BankDetail",
+  default: {
+    userId: "",
+    token: "",
+    amount: 0,
+    provider: "",
+  },
 });

@@ -1,25 +1,78 @@
+import bcrypt from "bcryptjs";
 import express from "express";
 import db from "@repo/db/client";
 const app = express();
+import dotenv from "dotenv";
+import cors from "cors";
+dotenv.config();
 
 app.use(express.json());
-
+app.use(cors());
+app.get("/hdfcWebhook", (req, res) => {
+  res.send("hii");
+});
 app.post("/hdfcWebhook", async (req, res) => {
-  //TODO: Add zod validation here?
-  //TODO: HDFC bank should ideally send us a secret so we know this is sent by them
   const paymentInformation: {
     token: string;
     userId: string;
     amount: string;
     provider?: string;
+    number?: string;
+    password?: string;
   } = {
     token: req.body.token,
     userId: req.body.user_identifier,
     amount: req.body.amount,
     provider: req.body.provider,
+    number: req.body.number,
+    password: req.body.password,
   };
 
+  if (
+    !paymentInformation.token ||
+    !paymentInformation.userId ||
+    !paymentInformation.amount ||
+    !paymentInformation.provider ||
+    !paymentInformation.number ||
+    !paymentInformation.password
+  ) {
+    return res.status(401).json({
+      success: false,
+      message: "invalid credentials",
+    });
+  }
+  const authorizationHeader = req.headers.authorization;
+
+  console.log("Authorization Header:", authorizationHeader);
+
+  // if (authorizationHeader !== process.env.BANK_SECRET_KEY) {
+  //   return res.status(403).json({
+  //     success: false,
+  //     message: "UnAuthorized credentials",
+  //   });
+  // }
+
   try {
+    const user = await db.user.findUnique({
+      where: { id: Number(paymentInformation.userId) },
+    });
+    if (!user) {
+      return res.status(403).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    const isValid = bcrypt.compare(
+      paymentInformation.password,
+      user?.password || ""
+    );
+    if (!isValid || user?.number !== paymentInformation.number) {
+      return res.status(403).json({
+        success: false,
+        message: "Password or phone Number invalid",
+      });
+    }
+
     await db.$transaction([
       db.balance.updateMany({
         where: {
@@ -52,12 +105,14 @@ app.post("/hdfcWebhook", async (req, res) => {
       }),
     ]);
 
-    res.json({
+    res.status(200).json({
+      success: true,
       message: "Captured",
     });
   } catch (e) {
     console.error(e);
     res.status(411).json({
+      success: false,
       message: "Error while processing webhook",
     });
   }

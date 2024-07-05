@@ -6,7 +6,8 @@ import prisma from "@repo/db/client";
 
 export const getRecentTransactions = async () => {
   const session = await getServerSession(authOptions);
-  const userId = session.user.id;
+  //@ts-ignore
+  const userId = session?.user?.id;
 
   if (!userId) {
     return {

@@ -56,7 +56,7 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
 
   return (
     <div>
-      <div className="text-4xl  pt-8 mb-8 font-bold">
+      <div className=" text-2xl md:text-4xl  pt-8 mb-8 font-bold">
         hello, <span className="text-[#6a51a6]">{userInfo.name}</span>
       </div>
       <div className=" md:w-[80%]">
@@ -81,7 +81,7 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
               ))}
             </div>
             <div className=" md:w-1/3">
-              <QrCode />
+              <QrCode email={userInfo?.email || ""} />
             </div>
           </div>
         </Card>

@@ -7,6 +7,10 @@ import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
 import { OnRampTransactions } from "./OnRampTransactions";
 import { createOnRempTransaction } from "../app/lib/createOnRampTxn";
+import toast from "react-hot-toast";
+import { useSetRecoilState } from "recoil";
+import { BankDetail } from "../atom/sendAtom";
+import { useRouter } from "next/navigation";
 
 const SUPPORTED_BANKS = [
   {
@@ -20,11 +24,44 @@ const SUPPORTED_BANKS = [
 ];
 
 export const AddMoney = () => {
+  const router = useRouter();
   const [redirectUrl, setRedirectUrl] = useState(
     SUPPORTED_BANKS[0]?.redirectUrl
   );
   const [amount, setAmount] = useState(0);
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+  const [loading, setLoading] = useState(false);
+  const setBankDetailsValue = useSetRecoilState(BankDetail);
+  const onRampTxn = async () => {
+    setLoading(true);
+    try {
+      const res = await createOnRempTransaction(amount * 100, provider);
+      // console.log("res : ", res);
+      if (!res.success) {
+        toast.error("error while creating transaction");
+        return;
+      }
+
+      setBankDetailsValue({
+        amount: res.bankdetail?.amount || 0,
+        token: res.bankdetail?.token || "",
+        userId: res.bankdetail?.userId || "",
+        provider: res.bankdetail?.provider || "",
+      });
+
+      setRedirectUrl(
+        `/bank/${res.bankdetail?.token}/${provider === "Axis Bank" ? "axisbank" : "hdfcbank"}`
+      );
+      const redirect = `/bank/${res.bankdetail?.token}/${provider === "Axis Bank" ? "axisbank" : "hdfcbank"}`;
+      console.log(redirect);
+      // window.location.href = redirectUrl || "";
+      router.push(redirect || "/");
+    } catch (error) {
+      console.log(" error while generation tran:", error);
+      toast.error("error while generation transaction");
+    }
+    setLoading(false);
+  };
   return (
     <Card title="Add Money">
       <div className="w-full">
@@ -52,14 +89,10 @@ export const AddMoney = () => {
         />
         <div className="flex justify-center pt-4">
           <Button
-            onClick={async () => {
-              const res = await createOnRempTransaction(amount * 100, provider);
-              console.log("res : ", res);
-
-              window.location.href = redirectUrl || "";
-            }}
+            disabled={loading}
+            onClick={onRampTxn}
           >
-            Add Money
+            {loading ? "please wait..." : "Send Money"}
           </Button>
         </div>
       </div>

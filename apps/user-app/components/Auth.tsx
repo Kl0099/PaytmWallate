@@ -43,6 +43,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         password: password,
         number: number,
       });
+      // console.log("response :", res);
       //@ts-ignore
       if (!res.success) {
         toast.error(res.message);
@@ -140,7 +141,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
           disabled={loading}
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
-          {type === "signup" ? "Sign Up" : "Sign In"}
+          {loading ? "please wait..." : "Sign up"}
         </button>
       </div>
     </div>

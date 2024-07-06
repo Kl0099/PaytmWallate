@@ -39,6 +39,7 @@ export const AddMoney = () => {
       // console.log("res : ", res);
       if (!res.success) {
         toast.error("error while creating transaction");
+        setLoading(false);
         return;
       }
 
@@ -53,7 +54,7 @@ export const AddMoney = () => {
         `/bank/${res.bankdetail?.token}/${provider === "Axis Bank" ? "axisbank" : "hdfcbank"}`
       );
       const redirect = `/bank/${res.bankdetail?.token}/${provider === "Axis Bank" ? "axisbank" : "hdfcbank"}`;
-      console.log(redirect);
+      // console.log(redirect);
       // window.location.href = redirectUrl || "";
       router.push(redirect || "/");
     } catch (error) {
@@ -92,7 +93,7 @@ export const AddMoney = () => {
             disabled={loading}
             onClick={onRampTxn}
           >
-            {loading ? "please wait..." : "Send Money"}
+            {loading ? "please wait..." : "Add Money"}
           </Button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import { ToggleValue } from "../atom/sendAtom";
+import toast from "react-hot-toast";
 
 export const SidebarItem = ({
   href,
@@ -19,6 +20,7 @@ export const SidebarItem = ({
   const selected = pathname === href;
   const setToggleValue = useSetRecoilState(ToggleValue);
   const onclickfunc = () => {
+    toast("please wait...", { duration: 1000 });
     if (href === "/api/auth/signin") {
       signOut();
       router.push(href);
@@ -30,7 +32,7 @@ export const SidebarItem = ({
 
   return (
     <div
-      className={`flex ${selected ? "text-[#6a51a6]" : "text-slate-500"} cursor-pointer  p-2 pl-8`}
+      className={`flex ${selected ? "text-[#6a51a6]" : "text-slate-500"} focus:ring-2 cursor-pointer  p-2 pl-8`}
       onClick={onclickfunc}
     >
       <div className="pr-2">{icon}</div>

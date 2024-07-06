@@ -4,13 +4,15 @@ import { Appbar } from "@repo/ui/appbar";
 import { useRouter } from "next/navigation";
 import { Button } from "@repo/ui/button";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { ToggleValue } from "../atom/sendAtom";
+import { ToggleValue, userWholeInfo } from "../atom/sendAtom";
 import { MdMenu } from "react-icons/md";
 import { FaCrosshairs } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import ErrorComponent from "./ErrorComponent";
 import Image from "next/image";
 import PaytmLogo from "../public/paytm.png";
+import { useEffect } from "react";
+import { number } from "zod";
 export function AppbarClient() {
   const session = useSession();
   const router = useRouter();
@@ -23,6 +25,16 @@ export function AppbarClient() {
   const userName = session?.data?.user?.name || "";
   const userImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}?background=#000000&color=fff`;
   // const userImage = ``;
+  // console.log(session);
+  const setUserWholeInfo = useSetRecoilState(userWholeInfo);
+  useEffect(() => {
+    if (session.data) {
+      setUserWholeInfo({
+        name: session?.data.user?.name,
+        number: session?.data.user?.email,
+      });
+    }
+  }, []);
 
   return (
     <div className="flex justify-between shadow-sm px-4">

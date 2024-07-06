@@ -18,7 +18,10 @@ export const balance = atom<number>({
 
 export const userWholeInfo = atom<object>({
   key: "userWholeInfo",
-  default: {},
+  default: {
+    name: "",
+    number: "",
+  },
 });
 export const ToggleValue = atom<boolean>({
   key: "ToggleValue",

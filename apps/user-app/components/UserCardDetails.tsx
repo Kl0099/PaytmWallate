@@ -31,7 +31,7 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
   const infoarray = [
     {
       title: "Total Amount",
-      value: userInfo.Balance.amount / 100,
+      value: `${userInfo.Balance.amount / 100}.00  INR`,
     },
     {
       title: "PublicId",

@@ -52,6 +52,7 @@ export const SentVerificationEmail = async ({
         OR: [{ email: email }, { number: number }],
       },
     });
+    // console.log("exist user : ", existUser);
     if (existUser) {
       return {
         success: false,

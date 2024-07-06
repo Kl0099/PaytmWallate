@@ -3,34 +3,54 @@ import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { Center } from "@repo/ui/center";
 import { TextInput } from "@repo/ui/textinput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { P2PTransfer, P2PTransferMoney } from "../app/lib/P2PTransfer";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../app/lib/auth";
-import { sendMoneyMessage } from "../atom/sendAtom";
-import { useSetRecoilState } from "recoil";
+import { sendMoneyMessage, userWholeInfo } from "../atom/sendAtom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import toast from "react-hot-toast";
 
 export function SendCard() {
   const [number, setNumber] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userNumber, setUserNumer] = useState("");
+  const userInfo = useRecoilValue(userWholeInfo);
+  useEffect(() => {
+    if (userInfo) {
+      setUserNumer(userInfo.number);
+      // console.log("userinfo : ", userInfo);
+    }
+  }, []);
 
   const setSendMoneyMessage = useSetRecoilState(sendMoneyMessage);
 
   const sendMoney = async () => {
+    if (number === userNumber) {
+      toast.error("why are you try to send money to your own account");
+      return;
+    }
     setLoading(true);
+    const toastId = toast.loading("please wait...");
     try {
       const res = await P2PTransfer(number, Number(amount) * 100);
       // console.log("response : " , res)
 
       if (res.success) {
         setSendMoneyMessage(res.message);
+        setLoading(false);
+        return;
+      }
+      if (!res.success) {
+        console.log("error while swndding money", res.message);
+        toast.error(res.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log("error while swndding money", error);
       setSendMoneyMessage(error.message);
+      toast.error("something went wrong");
     }
     setLoading(false);
+    toast.dismiss(toastId);
   };
 
   return (

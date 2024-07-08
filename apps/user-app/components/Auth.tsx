@@ -23,6 +23,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
   // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [optPage, setOtpPage] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [postInput, setPostInput] = useState<SignupInputes>({
     name: "",
     email: "",
@@ -31,6 +32,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     optPage: true,
   });
   const onclicksignin = async () => {};
+
   const onclicksignup = async (e: any) => {
     e.preventDefault();
     const { number, name, email, password } = postInput;
@@ -61,6 +63,13 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     toast.dismiss(toastId);
     // toast.dismiss("Signup");
   };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "Enter") {
+      onclicksignup(event);
+    }
+  };
+
   if (optPage) {
     return (
       <OtpInput
@@ -126,16 +135,30 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
           setPostInput({ ...postInput, number: e.target.value });
         }}
       />
-      <LabelInput
-        type="password"
-        label="Password"
-        placeholder="Enter your password"
-        onChange={(e) => {
-          setPostInput({ ...postInput, password: e.target.value });
-        }}
-      />
+      <div className=" flex flex-col gap-2">
+        <LabelInput
+          type={showPassword ? "text" : "password"}
+          label="Password"
+          placeholder="Enter your password"
+          onChange={(e) => {
+            setPostInput({ ...postInput, password: e.target.value });
+          }}
+        />
+        <div className=" flex items-center">
+          <input
+            onClick={() => setShowPassword((value) => !value)}
+            className="hover:cursor-pointer"
+            type="checkbox"
+            name="show"
+            id="show"
+          />
+          <span className=" ml-1 text-sm">Show password</span>
+        </div>
+      </div>
       <div>
         <button
+          tabIndex={0}
+          onKeyDown={(e) => handleKeyDown(e)}
           onClick={(e) => onclicksignup(e)}
           type="button"
           disabled={loading}

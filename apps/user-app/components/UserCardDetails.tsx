@@ -61,8 +61,8 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
       </div>
       <div className=" md:w-[80%]">
         <Card title="Personal information">
-          <div className="  flex lg:flex-row flex-col  p-1 md:p-2 mt-5 lg:text-lg">
-            <div className="md:w-2/3">
+          <div className="  flex  flex-wrap lg:flex-row flex-col  p-1 md:p-2 mt-5 lg:text-lg">
+            <div className="md:w-2/3 ">
               {infoarray.map((item) => (
                 <div
                   key={item.title}
@@ -80,7 +80,7 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
                 </div>
               ))}
             </div>
-            <div className=" md:w-1/3">
+            <div className="  ">
               <QrCode
                 number={userInfo.number || ""}
                 token={userInfo?.token || ""}

@@ -8,6 +8,7 @@ import { P2PTransfer, P2PTransferMoney } from "../app/lib/P2PTransfer";
 import { sendMoneyMessage, userWholeInfo } from "../atom/sendAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function SendCard() {
   const [number, setNumber] = useState("");
@@ -15,6 +16,7 @@ export function SendCard() {
   const [loading, setLoading] = useState(false);
   const [userNumber, setUserNumer] = useState("");
   const userInfo = useRecoilValue(userWholeInfo);
+  const router = useRouter();
   useEffect(() => {
     if (userInfo) {
       setUserNumer(userInfo.number);
@@ -32,13 +34,18 @@ export function SendCard() {
     setLoading(true);
     const toastId = toast.loading("please wait...");
     try {
+      console.log("num : ", number);
       const res = await P2PTransfer(number, Number(amount) * 100);
       // console.log("response : " , res)
 
       if (res.success) {
         setSendMoneyMessage(res.message);
         setLoading(false);
+
         toast.dismiss(toastId);
+        toast.success("money transfered successfully");
+        router.replace("/dashboard");
+
         return;
       }
       if (!res.success) {
@@ -60,8 +67,8 @@ export function SendCard() {
         <Card title="Send">
           <div className="min-w-65 pt-2">
             <TextInput
-              placeholder={"Number"}
-              label="Number"
+              placeholder={"Mobile Number"}
+              label="Mobile Number"
               onChange={(value) => {
                 setNumber(value);
               }}

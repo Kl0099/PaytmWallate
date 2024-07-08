@@ -9,7 +9,9 @@ export const P2PTransfer = async (
   amount: number,
   token?: string
 ) => {
+  // console.log("P2PTransfer : tokken :", token);
   const session = await getServerSession(authOptions);
+  // console.log("P2PTransfer : ", session);
   //@ts-ignore
   const from = session?.user?.id;
   if (!from) {
@@ -30,13 +32,16 @@ export const P2PTransfer = async (
         message: "user not found",
       };
     }
+    // console.log("P2PTransfer :  ", number);
     const toUser = await prisma.user.findFirst({
       where: {
         number: number,
       },
     });
+    // console.log("Touser : ", toUser);
 
     if (token) {
+      // console.log("hiii");
       if (toUser?.token !== token) {
         return {
           success: false,

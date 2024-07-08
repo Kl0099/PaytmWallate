@@ -1,11 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+//@ts-ignore
 import { useQRCode } from "next-qrcode";
 import { Button } from "@repo/ui/button";
 import { useRouter } from "next/navigation";
-import { decryption, encryption } from "../app/lib/encryption";
-import { useSetRecoilState } from "recoil";
-import { uniqueToken } from "../atom/sendAtom";
 import { BsQrCodeScan } from "react-icons/bs";
 
 const QrCode = ({ token, number }: { token: string; number: string }) => {

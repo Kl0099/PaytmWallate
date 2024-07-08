@@ -1,20 +1,21 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
   const alice = await prisma.user.upsert({
-    where: { number: '1111111111' },
+    where: { number: "1111111111" },
     update: {},
+    //@ts-ignore
     create: {
-      number: '1111111111',
-      password: await bcrypt.hash('password', 10),
-      name: 'alice',
+      number: "1111111111",
+      password: await bcrypt.hash("password", 10),
+      name: "alice",
       Balance: {
         create: {
-            amount: 20000,
-            locked: 0
-        }
+          amount: 20000,
+          locked: 0,
+        },
       },
       OnRampTransaction: {
         create: {
@@ -26,19 +27,20 @@ async function main() {
         },
       },
     },
-  })
+  });
   const bob = await prisma.user.upsert({
-    where: { number: '2222222222' },
+    where: { number: "2222222222" },
     update: {},
+    //@ts-ignore
     create: {
-      number: '2222222222',
-      password: await bcrypt.hash('password', 10),
-      name: 'bob',
+      number: "2222222222",
+      password: await bcrypt.hash("password", 10),
+      name: "bob",
       Balance: {
         create: {
-            amount: 2000,
-            locked: 0
-        }
+          amount: 2000,
+          locked: 0,
+        },
       },
       OnRampTransaction: {
         create: {
@@ -50,15 +52,15 @@ async function main() {
         },
       },
     },
-  })
-  console.log({ alice, bob })
+  });
+  console.log({ alice, bob });
 }
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

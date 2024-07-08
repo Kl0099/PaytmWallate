@@ -64,7 +64,7 @@ export function PaytmScanAndPay({
         return;
       }
       if (!res.success) {
-        console.log("error while swndding money", res.message);
+        console.log("error while sendding money", res.message);
         toast.error(res.message);
       }
     } catch (error) {

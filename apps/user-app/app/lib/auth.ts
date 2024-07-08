@@ -1,11 +1,7 @@
 import db from "@repo/db/client";
-import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import prisma from "@repo/db/client";
 import { NextAuthOptions } from "next-auth";
-import { z } from "zod";
-import { nodemailerEmailSending } from "./MailSender";
-import otpgenerater from "otp-generator";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -21,9 +17,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password", required: true },
       },
-      // TODO: User credentials type from next-aut
       async authorize(credentials: any) {
-        // Do zod validation, OTP validation here
         const hashedPassword = await bcrypt.hash(credentials.password, 10);
         const existingUser = await db.user.findFirst({
           where: {
@@ -56,7 +50,6 @@ export const authOptions: NextAuthOptions = {
 
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    // TODO: can u fix the type here? Using any is bad
     async session({ token, session }: any) {
       session.user.id = token.sub;
 

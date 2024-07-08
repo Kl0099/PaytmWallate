@@ -1,18 +1,14 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Appbar } from "@repo/ui/appbar";
-import { useRouter } from "next/navigation";
 import { Button } from "@repo/ui/button";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { IoClose } from "react-icons/io5";
+import { MdMenu } from "react-icons/md";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ToggleValue, userWholeInfo } from "../atom/sendAtom";
-import { MdMenu } from "react-icons/md";
-import { FaCrosshairs } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
-import ErrorComponent from "./ErrorComponent";
-import Image from "next/image";
 import PaytmLogo from "../public/paytm.png";
-import { useEffect } from "react";
-import { number } from "zod";
 export function AppbarClient() {
   const session = useSession();
   const router = useRouter();
@@ -23,7 +19,6 @@ export function AppbarClient() {
   const setToggleValue = useSetRecoilState(ToggleValue);
   const toggleValue = useRecoilValue(ToggleValue);
   const userName = session?.data?.user?.name || "";
-  const userImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}?background=#000000&color=fff`;
   // const userImage = ``;
   // console.log(session);
   const setUserWholeInfo = useSetRecoilState(userWholeInfo);

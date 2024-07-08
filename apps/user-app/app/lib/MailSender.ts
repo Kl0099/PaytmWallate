@@ -45,7 +45,7 @@ export async function nodemailerEmailSending({
       title: "Verification Email",
       body: bodyHtml(otp),
     });
-    console.log("Email sent successfully");
+    // console.log("Email sent successfully");
     return {
       success: true,
       message: "success",

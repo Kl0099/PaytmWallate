@@ -34,7 +34,7 @@ export function SendCard() {
     setLoading(true);
     const toastId = toast.loading("please wait...");
     try {
-      console.log("num : ", number);
+      // console.log("num : ", number);
       const res = await P2PTransfer(number, Number(amount) * 100);
       // console.log("response : " , res)
 

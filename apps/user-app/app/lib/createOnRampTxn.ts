@@ -1,9 +1,8 @@
 "use server";
 
+import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
-import prisma from "@repo/db/client";
-import { FaDiagramSuccessor } from "react-icons/fa6";
 
 export const createOnRempTransaction = async (
   amount: number,

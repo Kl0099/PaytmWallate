@@ -13,7 +13,6 @@ export default async function Layout({
 
   if (!session) {
     redirect("/signup");
-    return <></>; // This will never be rendered because of the redirect
   }
   return (
     <div>

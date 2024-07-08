@@ -1,13 +1,10 @@
 "use server";
 
-import db from "@repo/db/client";
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 import prisma from "@repo/db/client";
-import { NextAuthOptions } from "next-auth";
+import bcrypt from "bcryptjs";
+import otpgenerater from "otp-generator";
 import { z } from "zod";
 import { nodemailerEmailSending } from "./MailSender";
-import otpgenerater from "otp-generator";
 
 // Define the input schema using Zod
 const signUpSchema = z.object({
@@ -152,7 +149,7 @@ export const checkotpAndSignUp = async ({
         createdAt: "desc",
       },
     });
-    console.log("is valid otp : ", isValidOtp);
+    // console.log("is valid otp : ", isValidOtp);
     if (!isValidOtp) {
       return {
         success: false,
@@ -173,7 +170,7 @@ export const checkotpAndSignUp = async ({
     });
 
     if (existUser) {
-      console.log("user already exists : ", existUser);
+      // console.log("user already exists : ", existUser);
       return {
         success: false,
         message: "User already exists",
@@ -189,7 +186,7 @@ export const checkotpAndSignUp = async ({
       },
     });
 
-    console.log("created user : ", user);
+    // console.log("created user : ", user);
 
     const balance = await prisma.balance.create({
       data: {

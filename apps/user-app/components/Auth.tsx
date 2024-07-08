@@ -1,14 +1,8 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
-import axios from "axios";
-import Credentials from "next-auth/providers/credentials";
+import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { FaCheckCircle } from "react-icons/fa";
-// import { SentVerificationEmail } from "";
-import { redirect } from "next/navigation";
 import { SentVerificationEmail } from "../app/lib/Varification";
 import OtpInput from "./OtpInput";
 interface SignupInputes {
@@ -31,7 +25,6 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     number: "",
     optPage: true,
   });
-  const onclicksignin = async () => {};
 
   const onclicksignup = async (e: any) => {
     e.preventDefault();
@@ -62,12 +55,6 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     setLoading(false);
     toast.dismiss(toastId);
     // toast.dismiss("Signup");
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === "Enter") {
-      onclicksignup(event);
-    }
   };
 
   if (optPage) {
@@ -157,8 +144,6 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       </div>
       <div>
         <button
-          tabIndex={0}
-          onKeyDown={(e) => handleKeyDown(e)}
           onClick={(e) => onclicksignup(e)}
           type="button"
           disabled={loading}

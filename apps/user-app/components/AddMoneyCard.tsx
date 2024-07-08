@@ -1,16 +1,14 @@
 "use client";
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
-import { Center } from "@repo/ui/center";
 import { Select } from "@repo/ui/select";
-import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
-import { OnRampTransactions } from "./OnRampTransactions";
-import { createOnRempTransaction } from "../app/lib/createOnRampTxn";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useSetRecoilState } from "recoil";
+import { createOnRempTransaction } from "../app/lib/createOnRampTxn";
 import { BankDetail } from "../atom/sendAtom";
-import { useRouter } from "next/navigation";
 
 const SUPPORTED_BANKS = [
   {

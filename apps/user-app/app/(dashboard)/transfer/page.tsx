@@ -1,11 +1,9 @@
 import prisma from "@repo/db/client";
+import { getServerSession } from "next-auth";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
-import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
-import { useRecoilValue } from "recoil";
-import { balance } from "../../../atom/sendAtom";
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -32,7 +30,6 @@ async function getBalance() {
 
 async function getOnRampTransactions() {
   const session = await getServerSession(authOptions);
-  console.log("hii  getOnRampTransactions function called ");
   // console.log("session" , session.user)
 
   const txns = await prisma.onRampTransaction.findMany({

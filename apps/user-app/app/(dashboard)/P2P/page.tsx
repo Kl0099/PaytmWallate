@@ -1,12 +1,5 @@
-import { getServerSession } from "next-auth";
-import { SendCard } from "../../../components/SendCard";
-import { authOptions } from "../../lib/auth";
-import prisma from "@repo/db/client";
-import { Button } from "@repo/ui/button";
 import ClientComponent from "../../../components/ClientComponent";
-import { P2PTransferMoney } from "../../lib/P2PTransfer";
-import { useState } from "react";
-import { Center } from "@repo/ui/center";
+import { SendCard } from "../../../components/SendCard";
 
 export default async function () {
   return (

@@ -43,8 +43,6 @@ app.post("/hdfcWebhook", async (req, res) => {
   }
   const authorizationHeader = req.headers.authorization;
 
-  console.log("Authorization Header:", authorizationHeader);
-
   // if (authorizationHeader !== process.env.BANK_SECRET_KEY) {
   //   return res.status(403).json({
   //     success: false,

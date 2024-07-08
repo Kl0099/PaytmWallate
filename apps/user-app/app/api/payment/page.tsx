@@ -15,7 +15,6 @@ const Page = () => {
 
   const token = searchParams.get("token");
   const number = searchParams.get("number");
-  // console.log(token, number);
   const path = params.token; // Assuming token is the dynamic parameter in your route
 
   useEffect(() => {

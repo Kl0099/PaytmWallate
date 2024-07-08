@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { BankDetail } from "../atom/sendAtom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { BankDetail, sendMoneyMessage } from "../atom/sendAtom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
-
+import AXisbankLogo from "../public/Axis_Bank-Logo.wine.png";
+import HDFCbankLogo from "../public/HDFC-Bank-Logo.png";
+import Image from "next/image";
 interface BankLoginProps {
   bank: "HDFC" | "Axis";
 }
@@ -22,6 +24,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
     provider: "",
   });
   const bankdetails = useRecoilValue(BankDetail);
+  const setMoneyMessage = useSetRecoilState(sendMoneyMessage);
   const router = useRouter();
   useEffect(() => {
     if (bankdetails) {
@@ -40,7 +43,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       return;
     }
     setLoading(true);
-    const url = `http://localhost:3003/hdfcWebhook`;
+    const url = `${process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL}/hdfcWebhook`;
     const toastId = toast.loading("please wait...");
     try {
       const res = await axios.post(url, {
@@ -51,7 +54,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
         number: phone,
         password: password,
       });
-      console.log("response : ", res.data);
+      // console.log("response : ", res.data);
       //@ts-ignore
       if (!res.data.success) {
         //@ts-ignore
@@ -60,6 +63,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       }
       if (res.data.success) {
         toast.success("money transfer sucessfuly");
+        setMoneyMessage("money transfer sucessfuly");
         router.replace("/dashboard");
       }
     } catch (error) {
@@ -80,7 +84,15 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       <h1 className="text-2xl font-bold mb-6">
         Welcome to {bank} Bank NetBanking
       </h1>
+
       <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
+        <div className="mb-4 mx-auto flex items-center justify-center">
+          <Image
+            src={bank === "HDFC" ? HDFCbankLogo : AXisbankLogo}
+            alt={`${bank} Bank Logo`}
+            className="w-32 h-32 object-contain"
+          />
+        </div>
         <div className="mb-4">
           <label
             htmlFor="Number"

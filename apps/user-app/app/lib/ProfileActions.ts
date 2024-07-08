@@ -3,13 +3,10 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 import prisma from "@repo/db/client";
-import { getSession } from "next-auth/react";
-import { useSetRecoilState } from "recoil";
-import { userWholeInfo } from "../../atom/sendAtom";
 
 export const ChangeName = async (value: string) => {
   const session = await getServerSession(authOptions);
-  console.log("sesttion : ", session);
+  // console.log("sesttion : ", session);
   //@ts-ignore
   const userId = session?.user?.id;
   if (!userId) {
@@ -32,7 +29,7 @@ export const ChangeName = async (value: string) => {
     //@ts-ignore
     session.user.name = value;
     // await session.save(); // Save the updated session
-    console.log("session updated : ", session);
+    // console.log("session updated : ", session);
   } catch (error) {
     console.log("error while updating session : ", error);
     return {

@@ -1,32 +1,31 @@
 "use client";
-import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
-import { Center } from "@repo/ui/center";
-import { TextInput } from "@repo/ui/textinput";
 import React, { useEffect, useState } from "react";
-import { ChangeName } from "../app/lib/ProfileActions";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { sendUserUpdateMessage, userWholeInfo } from "../atom/sendAtom";
-import { useSession } from "next-auth/react";
-import { title } from "process";
+
 import QrCode from "./QrCode";
+import { useRecoilValue } from "recoil";
+import { sendMoneyMessage } from "../atom/sendAtom";
+import { useRouter } from "next/navigation";
 interface userInfo {
   number: string;
   name: string | null;
   email: string | null;
+  token: string | null;
   Balance: {
     amount: number;
     locked: number;
   };
 }
 const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
-  const [greeting, setGreeting] = useState("");
+  const router = useRouter();
+  // const userinfo = useRecoilValue(userWholeInfo);
+  const message = useRecoilValue(sendMoneyMessage);
 
   useEffect(() => {
-    setGreeting(getGreeting());
-  }, []);
+    router.refresh();
+  }, [message]);
 
-  // const userinfo = useRecoilValue(userWholeInfo);
+  useEffect(() => {}, []);
 
   const infoarray = [
     {
@@ -58,7 +57,7 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
   return (
     <div>
       <div className=" text-2xl md:text-4xl  pt-8 mb-8 font-bold">
-        {greeting}, <span className="text-[#6a51a6]">{userInfo.name}</span>
+        Hello , <span className="text-[#6a51a6]">{userInfo.name}</span>
       </div>
       <div className=" md:w-[80%]">
         <Card title="Personal information">
@@ -82,7 +81,10 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
               ))}
             </div>
             <div className=" md:w-1/3">
-              <QrCode email={userInfo?.email || ""} />
+              <QrCode
+                number={userInfo.number || ""}
+                token={userInfo?.token || ""}
+              />
             </div>
           </div>
         </Card>
@@ -91,14 +93,4 @@ const UserCardDetails = ({ userInfo }: { userInfo: userInfo }) => {
   );
 };
 
-const getGreeting = () => {
-  const currentHour = new Date().getHours();
-  if (currentHour < 12) {
-    return "Good morning";
-  } else if (currentHour < 18) {
-    return "Good afternoon";
-  } else {
-    return "Good evening";
-  }
-};
 export default UserCardDetails;

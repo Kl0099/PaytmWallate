@@ -15,8 +15,12 @@ export const balance = atom<number>({
   key: "balance",
   default: 0,
 });
+interface UserInfo {
+  name: string;
+  number: string;
+}
 
-export const userWholeInfo = atom<object>({
+export const userWholeInfo = atom<UserInfo>({
   key: "userWholeInfo",
   default: {
     name: "",
@@ -42,4 +46,8 @@ export const BankDetail = atom<bankDetails>({
     amount: 0,
     provider: "",
   },
+});
+export const uniqueToken = atom<string>({
+  key: "uniqueToken",
+  default: "",
 });

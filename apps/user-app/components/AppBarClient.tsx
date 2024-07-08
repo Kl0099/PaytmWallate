@@ -30,8 +30,8 @@ export function AppbarClient() {
   useEffect(() => {
     if (session.data) {
       setUserWholeInfo({
-        name: session?.data.user?.name,
-        number: session?.data.user?.email,
+        name: session?.data.user?.name || "",
+        number: session?.data.user?.email || "",
       });
     }
   }, []);
@@ -48,13 +48,6 @@ export function AppbarClient() {
         />
       </div>
       <div className=" md:flex hidden flex-row items-center justify-center pt-2">
-        <Image
-          className=" mb-2  mr-5 rounded-full"
-          alt={session.data?.user?.name || ""}
-          src={userImage}
-          width={45}
-          height={40}
-        />
         <Button onClick={session.data?.user ? onSignout : signIn}>
           {session.data?.user ? "Logout" : "Login"}
         </Button>

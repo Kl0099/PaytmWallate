@@ -25,6 +25,7 @@ export const getRecentTransactions = async () => {
         name: true,
         number: true,
         email: true,
+        token: true,
         Balance: {
           select: {
             amount: true,

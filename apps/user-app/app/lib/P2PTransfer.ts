@@ -4,8 +4,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 import prisma from "@repo/db/client";
 
-export const P2PTransfer = async (number: string, amount: number) => {
+export const P2PTransfer = async (
+  number: string,
+  amount: number,
+  token?: string
+) => {
   const session = await getServerSession(authOptions);
+  //@ts-ignore
   const from = session?.user?.id;
   if (!from) {
     return {
@@ -30,6 +35,15 @@ export const P2PTransfer = async (number: string, amount: number) => {
         number: number,
       },
     });
+
+    if (token) {
+      if (toUser?.token !== token) {
+        return {
+          success: false,
+          message: "user not found",
+        };
+      }
+    }
 
     if (!toUser) {
       return {
@@ -104,6 +118,7 @@ export const P2PTransfer = async (number: string, amount: number) => {
 export const P2PTransferMoney = async () => {
   try {
     const session = await getServerSession(authOptions);
+    //@ts-ignore
     const fromUserId = session?.user?.id;
 
     if (!fromUserId) {

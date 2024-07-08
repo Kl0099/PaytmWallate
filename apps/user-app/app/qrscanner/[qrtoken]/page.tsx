@@ -1,17 +1,11 @@
 "use client";
 
 import { useSession, signIn } from "next-auth/react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import QrReader from "../../../components/QrReader";
 import "../../globals.css";
 const QRScannerPage = () => {
-  const { data: session, status } = useSession();
-  const router = useParams();
-  const { token } = router;
-  // console.log("session :", session);
-  const params = useSearchParams();
-  const number = params.get("number");
+  const { status } = useSession();
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -27,6 +21,7 @@ const QRScannerPage = () => {
     // if(session.user.)
     return (
       <div>
+        <Suspense fallback={<div>Loading...</div>}></Suspense>
         <QrReader />
       </div>
     );

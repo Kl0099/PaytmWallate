@@ -1,8 +1,7 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "../provider";
-import { AppbarClient } from "../components/AppBarClient";
+import "./globals.css";
 
 import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
@@ -14,10 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  isSignUpPage = false,
 }: {
   children: React.ReactNode;
-  isSignUpPage: boolean;
 }): JSX.Element {
   return (
     <html lang="en">

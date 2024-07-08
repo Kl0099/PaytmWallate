@@ -1,34 +1,33 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-//@ts-ignore
-import { useQRCode } from "next-qrcode";
+// import { useQRCode } from "next-qrcode";
+
 import { Button } from "@repo/ui/button";
 import { useRouter } from "next/navigation";
 import { BsQrCodeScan } from "react-icons/bs";
 
-const QrCode = ({ token, number }: { token: string; number: string }) => {
-  const [loading, setLoading] = useState(false);
-  const { Canvas, SVG, Image } = useQRCode();
-  // const setUniqToken = useSetRecoilState(uniqueToken);
-  const imageRef = useRef<HTMLImageElement>(null);
+import QRCode from "react-qr-code";
 
+const QrCode = ({ token, number }: { token: string; number: string }) => {
   const router = useRouter();
 
   const handlescann = () => {
     router.replace(`/qrscanner/${token}?number=${number}`);
   };
-  const clickmethod = () => {};
-
-  // useEffect(() => {
-  //   console.log("imageref curent : ", imageRef.current?.src);
-  //   if (imageRef.current) {
-  //     console.log("imagefer : ", imageRef.current.src);
-  //   }
-  // }, [imageRef]);
 
   return (
     <div className="flex mb-5 flex-col  justify-center items-center">
-      <Image
+      <QRCode
+        size={150}
+        style={{
+          marginBottom: "10px",
+          height: "auto",
+        }}
+        value={`${token}&number=${number}`}
+        viewBox={`0 0 256 256`}
+      />
+
+      {/* <Image
         text={`${token}&number=${number}`}
         options={{
           errorCorrectionLevel: "M",
@@ -43,7 +42,7 @@ const QrCode = ({ token, number }: { token: string; number: string }) => {
         }}
         //@ts-ignore
         ref={imageRef}
-      />
+      /> */}
       <div className=" flex items-center justify-center w-[200px]">
         <Button onClick={handlescann}>
           <div className=" w-full justify-center flex items-center gap-2">

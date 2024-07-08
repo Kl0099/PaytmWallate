@@ -4,7 +4,7 @@ import { Card } from "@repo/ui/card";
 import { Center } from "@repo/ui/center";
 import { TextInput } from "@repo/ui/textinput";
 import { useEffect, useState } from "react";
-import { P2PTransfer, P2PTransferMoney } from "../app/lib/P2PTransfer";
+import { P2PTransfer } from "../app/lib/P2PTransfer";
 import { sendMoneyMessage, userWholeInfo } from "../atom/sendAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import toast from "react-hot-toast";

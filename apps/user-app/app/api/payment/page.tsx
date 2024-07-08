@@ -1,21 +1,27 @@
 // api/payment/payment.tsx
 
 "use client";
-import { useParams, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect } from "react";
 import { PaytmScanAndPay } from "../../../components/PaytmScanAndPay";
 import { signIn, useSession } from "next-auth/react";
 import { validateUser } from "../../lib/encryption";
 import ErrorComponent from "../../../components/ErrorComponent";
 
 const Page = () => {
-  const { data: session, status } = useSession();
-  const params = useParams(); // Access dynamic route parameters
-  const searchParams = useSearchParams(); // Access query parameters
+  const { status } = useSession();
 
-  const token = searchParams.get("token");
-  const number = searchParams.get("number");
-  const path = params.token; // Assuming token is the dynamic parameter in your route
+  function getSearchParams() {
+    const searchParams = useSearchParams(); // Access query parameters
+
+    const token = searchParams.get("token");
+    const number = searchParams.get("number");
+
+    return {
+      token: token,
+      number: number,
+    };
+  }
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -27,6 +33,7 @@ const Page = () => {
   }
 
   if (status === "authenticated") {
+    const { token, number } = getSearchParams();
     const isValid = validateUser(`${token}&number=${number}`);
     if (!isValid) {
       return (

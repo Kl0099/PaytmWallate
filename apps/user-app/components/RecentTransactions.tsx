@@ -1,5 +1,4 @@
 import { Card } from "@repo/ui/card";
-import { getRecentTransactions } from "../app/lib/RecentTransections";
 
 type status = "Received" | "Transfer";
 

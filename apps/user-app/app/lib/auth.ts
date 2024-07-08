@@ -18,7 +18,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", required: true },
       },
       async authorize(credentials: any) {
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
         const existingUser = await db.user.findFirst({
           where: {
             number: credentials.phone,

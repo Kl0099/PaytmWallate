@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const SideBar = () => {
-  const setToggleValue = useSetRecoilState(ToggleValue);
   const toggleValue = useRecoilValue(ToggleValue);
   const session = useSession();
   const userName = session?.data?.user?.name || "";

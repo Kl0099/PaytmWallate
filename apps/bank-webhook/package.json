@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "db:generate": "cd ../../ && cd packages/db && npx prisma generate && cd ../../ && cd apps/bank-webhook",
+    "build": "npm run db:generate && npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "start": "nodemon dist/index.js",
     "dev": "npm run build && npm run start"
   },

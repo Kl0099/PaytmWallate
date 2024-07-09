@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "db:generate": "../../ && cd packages/db && npx prisma generate && cd ../../ && cd apps/user-app",
+    "db:generate": "cd ../../ && cd packages/db && npx prisma generate && cd ../../ && cd apps/user-app",
     "dev": "next dev --port 3001",
     "build": "npm run db:generate &&  next build",
     "start": "next start",

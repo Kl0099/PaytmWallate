@@ -58,7 +58,8 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       //@ts-ignore
       if (!res.data.success) {
         //@ts-ignore
-        toast.error(res.message);
+        toast.error(res.data.message);
+        router.replace("/dashboard");
         return;
       }
       if (res.data.success) {

@@ -41,9 +41,7 @@ export function SendCard() {
       if (res.success) {
         setSendMoneyMessage(res.message);
         setLoading(false);
-
-        toast.dismiss(toastId);
-        toast.success("money transfered successfully");
+        toast.success("money sent successfully");
         router.replace("/dashboard");
 
         return;
@@ -56,9 +54,10 @@ export function SendCard() {
       console.log("error while swndding money", error);
       setSendMoneyMessage(error.message);
       toast.error("something went wrong");
+    } finally {
+      setLoading(false);
+      toast.dismiss(toastId);
     }
-    setLoading(false);
-    toast.dismiss(toastId);
   };
 
   return (

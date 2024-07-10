@@ -26,13 +26,12 @@ export const RecentTransaction = async ({
               <div className="text-slate-600 text-[9px]">
                 {t.timestamp &&
                   new Date(t.timestamp)
-                    .toLocaleString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
+                    .toLocaleTimeString([], {
                       year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
                       hour: "2-digit",
                       minute: "2-digit",
-                      hour12: false,
                     })
                     .replace(",", "")}
               </div>

@@ -9,6 +9,7 @@ import { redirect, useRouter } from "next/navigation";
 import AXisbankLogo from "../public/Axis_Bank-Logo.wine.png";
 import HDFCbankLogo from "../public/HDFC-Bank-Logo.png";
 import Image from "next/image";
+import { headers } from "../next.config";
 interface BankLoginProps {
   bank: "HDFC" | "Axis";
 }
@@ -36,13 +37,14 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       });
     }
   }, [bankdetails]);
-  // console.log(bankdetails);
+  console.log("bankdetails : ", bankdetails);
   const transactions = async () => {
     if (bankDetail.amount === 0) {
       toast.error("server error!!!");
       return;
     }
     setLoading(true);
+    console.log("bankhuk : ", process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL);
     const url = `${process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL}/hdfcWebhook`;
     const toastId = toast.loading("please wait...");
     try {
@@ -56,11 +58,9 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
           number: phone,
           password: password,
         },
-        {
-          withCredentials: true,
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
-      // console.log("response : ", res.data);
+      console.log("response : ", res.data);
       //@ts-ignore
       if (!res.data.success) {
         //@ts-ignore
@@ -78,7 +78,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       console.log(
         "error while transfering money into wallet : ",
         //@ts-ignore
-        error.message
+        error
       );
     } finally {
       toast.dismiss(toastId);

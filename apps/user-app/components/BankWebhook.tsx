@@ -46,15 +46,21 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
     const url = `${process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL}/hdfcWebhook`;
     const toastId = toast.loading("please wait...");
     try {
-      const res = await axios.post(url, {
-        user_identifier: bankDetail.userId,
-        token: bankDetail.token,
-        amount: bankDetail.amount,
-        provider: bankDetail.provider,
-        number: phone,
-        password: password,
-      });
-      console.log("response : ", res.data);
+      const res = await axios.post(
+        url,
+        {
+          user_identifier: bankDetail.userId,
+          token: bankDetail.token,
+          amount: bankDetail.amount,
+          provider: bankDetail.provider,
+          number: phone,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      // console.log("response : ", res.data);
       //@ts-ignore
       if (!res.data.success) {
         //@ts-ignore

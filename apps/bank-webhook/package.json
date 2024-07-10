@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "build": "tsc && npx prisma generate --schema ../../packages/db/prisma/schema.prisma",
-    "start": "nodemon dist/index.js",
-    "dev": "npm run build && npm run start"
+    "build": "tsc && npx prisma generate --schema=../../packages/db/prisma/schema.prisma",
+    "dev": "ts-node-dev src/index.ts",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",

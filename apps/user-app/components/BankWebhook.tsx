@@ -54,7 +54,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
         number: phone,
         password: password,
       });
-      // console.log("response : ", res.data);
+      console.log("response : ", res.data);
       //@ts-ignore
       if (!res.data.success) {
         //@ts-ignore

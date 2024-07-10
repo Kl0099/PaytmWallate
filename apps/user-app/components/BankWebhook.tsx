@@ -37,14 +37,14 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
       });
     }
   }, [bankdetails]);
-  console.log("bankdetails : ", bankdetails);
+  // console.log("bankdetails : ", bankdetails);
   const transactions = async () => {
     if (bankDetail.amount === 0) {
       toast.error("server error!!!");
       return;
     }
     setLoading(true);
-    console.log("bankhuk : ", process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL);
+    // console.log("bankhuk : ", process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL);
     const url = `${process.env.NEXT_PUBLIC_BANK_WEBHOOK_URL}/hdfcWebhook`;
     const toastId = toast.loading("please wait...");
     try {
@@ -60,7 +60,7 @@ const BankLogin: React.FC<BankLoginProps> = ({ bank }) => {
         },
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("response : ", res.data);
+      // console.log("response : ", res.data);
       //@ts-ignore
       if (!res.data.success) {
         //@ts-ignore
